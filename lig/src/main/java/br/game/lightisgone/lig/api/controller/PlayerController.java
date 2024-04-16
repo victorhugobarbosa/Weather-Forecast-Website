@@ -1,5 +1,7 @@
 package br.game.lightisgone.lig.api.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,8 +18,12 @@ public class PlayerController {
         this.playerService = playerService;
     }
 
-    @GetMapping
-    public Player getPlayer(@RequestParam String location){
-        return playerService.getPlayer();
+    @GetMapping("/player")
+    public Player getPlayer(@RequestParam Integer id){
+        Optional player = playerService.getPlayer(id);
+        if(player.isPresent()){
+            return (Player) player.get();
+        }
+        return null;
     }
 }

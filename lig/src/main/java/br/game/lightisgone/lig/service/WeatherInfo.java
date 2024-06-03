@@ -14,55 +14,78 @@ public class WeatherInfo {
 
     private static final String API_KEY = "59cbdfc750b6440b94903611242805"; 
 
-    public void printWeatherInfo(String location) {
-        try {
-            String jsonResponse = weatherClient.getCurrentWeather(API_KEY, location);
-            JSONObject jsonObject = new JSONObject(jsonResponse);
+    private JSONObject getWeatherData(String location) throws JSONException {
+        String jsonResponse = weatherClient.getCurrentWeather(API_KEY, location);
+        return new JSONObject(jsonResponse);
+    }
 
-            if (jsonObject.has("location")) {
-                JSONObject locationObj = jsonObject.getJSONObject("location");
-                String name = locationObj.getString("name");
-                String region = locationObj.getString("region");
-                String country = locationObj.getString("country");
-                String timeZone = locationObj.getString("tz_id");
-                String localtime = locationObj.getString("localtime");
+    public String getLocationName(String location) throws JSONException {
+        JSONObject jsonObject = getWeatherData(location);
+        return jsonObject.getJSONObject("location").getString("name");
+    }
 
-                System.out.println("Location Name: " + name);
-                System.out.println("Region: " + region);
-                System.out.println("Country: " + country);
-                System.out.println("Time Zone: " + timeZone);
-                System.out.println("Local Time: " + localtime);
-            } else {
-                System.err.println("A chave 'location' não foi encontrada no JSON.");
-            }
+    public String getRegion(String location) throws JSONException {
+        JSONObject jsonObject = getWeatherData(location);
+        return jsonObject.getJSONObject("location").getString("region");
+    }
 
-            if (jsonObject.has("current")) {
-                JSONObject current = jsonObject.getJSONObject("current");
+    public String getCountry(String location) throws JSONException {
+        JSONObject jsonObject = getWeatherData(location);
+        return jsonObject.getJSONObject("location").getString("country");
+    }
 
-                double tempC = current.getDouble("temp_c");
-                double tempF = current.getDouble("temp_f");
-                double feelslikeC = current.getDouble("feelslike_c");
-                double feelslikeF = current.getDouble("feelslike_f");
-                double windKph = current.getDouble("wind_kph");
-                int humidity = current.getInt("humidity");
-                int cloud = current.getInt("cloud");
-                String conditionText = current.getJSONObject("condition").getString("text");
-                String conditionIcon = current.getJSONObject("condition").getString("icon");
+    public String getTimeZone(String location) throws JSONException {
+        JSONObject jsonObject = getWeatherData(location);
+        return jsonObject.getJSONObject("location").getString("tz_id");
+    }
 
-                System.out.println("Temperature (C): " + tempC);
-                System.out.println("Temperature (F): " + tempF);
-                System.out.println("Feels Like (C): " + feelslikeC);
-                System.out.println("Feels Like (F): " + feelslikeF);
-                System.out.println("Wind Speed (kph): " + windKph);
-                System.out.println("Humidity (%): " + humidity);
-                System.out.println("Cloud Cover (%): " + cloud);
-                System.out.println("Condition: " + conditionText);
-                System.out.println("Condition Icon URL: " + conditionIcon);
-            } else {
-                System.err.println("A chave 'current' não foi encontrada no JSON.");
-            }
-        } catch (JSONException e) {
-            System.err.println("Erro ao processar o JSON: " + e.getMessage());
-        }
+    public String getLocalTime(String location) throws JSONException {
+        JSONObject jsonObject = getWeatherData(location);
+        return jsonObject.getJSONObject("location").getString("localtime");
+    }
+
+    public double getTemperatureC(String location) throws JSONException {
+        JSONObject jsonObject = getWeatherData(location);
+        return jsonObject.getJSONObject("current").getDouble("temp_c");
+    }
+
+    public double getTemperatureF(String location) throws JSONException {
+        JSONObject jsonObject = getWeatherData(location);
+        return jsonObject.getJSONObject("current").getDouble("temp_f");
+    }
+
+    public double getFeelsLikeC(String location) throws JSONException {
+        JSONObject jsonObject = getWeatherData(location);
+        return jsonObject.getJSONObject("current").getDouble("feelslike_c");
+    }
+
+    public double getFeelsLikeF(String location) throws JSONException {
+        JSONObject jsonObject = getWeatherData(location);
+        return jsonObject.getJSONObject("current").getDouble("feelslike_f");
+    }
+
+    public double getWindSpeedKph(String location) throws JSONException {
+        JSONObject jsonObject = getWeatherData(location);
+        return jsonObject.getJSONObject("current").getDouble("wind_kph");
+    }
+
+    public int getHumidity(String location) throws JSONException {
+        JSONObject jsonObject = getWeatherData(location);
+        return jsonObject.getJSONObject("current").getInt("humidity");
+    }
+
+    public int getCloudCover(String location) throws JSONException {
+        JSONObject jsonObject = getWeatherData(location);
+        return jsonObject.getJSONObject("current").getInt("cloud");
+    }
+
+    public String getConditionText(String location) throws JSONException {
+        JSONObject jsonObject = getWeatherData(location);
+        return jsonObject.getJSONObject("current").getJSONObject("condition").getString("text");
+    }
+
+    public String getConditionIcon(String location) throws JSONException {
+        JSONObject jsonObject = getWeatherData(location);
+        return jsonObject.getJSONObject("current").getJSONObject("condition").getString("icon");
     }
 }

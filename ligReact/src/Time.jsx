@@ -1,18 +1,9 @@
-import { useState } from 'react'
 import React, { Component } from 'react';
-import axios from 'axios'
+import Loc from './Location.jsx'
 
 import './App.css'
 
-const urlAPI = "http://177.220.18.78/"
-const initialState = {
-    player: { username: '',},
-}
-
 export default class Time extends Component {
-
-    state = { ...initialState}
-
     componentDidMount(){
         setInterval(this.updateTime, 1000)
     }
@@ -62,11 +53,7 @@ export default class Time extends Component {
                 </div>
             </div>
             <div className="sectionMiddle">
-                <h1 style={{fontWeight: "bold"}} id="datetime"> Date Time </h1>
-                <h2 id="time">{new Date().toLocaleTimeString()}</h2>
-
-                <h1 style={{marginTop: "10%"}}>Clima</h1>
-                <h2 id="clima">Ensolarado</h2>
+                <Loc></Loc>
             </div>
         </div>
     )

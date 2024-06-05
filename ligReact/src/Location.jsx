@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import axios from 'axios'
-
-const urlAPI = "http://localhost:8080/weather"
 
 const LocationComponent = () => {
   const [climate, setClimate] = useState('');
@@ -9,15 +7,6 @@ const LocationComponent = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-
-    const getClimate = () => {
-        const url = `${urlAPI}/current/condition/text?location=${location.split(',')[0]}`
-        axios['get'](url).then(resp => {
-            //setClimate(resp)
-            //console.log(climate)
-        })
-      }
-
     const getLocation = async () => {
       try {
         const response = await fetch('https://ipapi.co/json/');
@@ -25,7 +14,6 @@ const LocationComponent = () => {
         const { city, region, country } = data;
         setLocation(`${city}, ${region}, ${country}`);
         setLoading(false);
-        getClimate()
       } catch (error) {
         console.error('Erro ao obter localização:', error);
         setLoading(false);
@@ -35,9 +23,19 @@ const LocationComponent = () => {
     getLocation();
   }, []);
 
-  getTemperature => {
+  useEffect(() => {
+    if(location){
+      const getClimate = () => {
+        const url = `http://localhost:8080/weather/current/condition/text?location=${location.split(',')[0]}`
+        axios['get'](url).then(resp => {
+          if(resp.data == "Sunny")
+            setClimate("Ensolarado")
+        })
+      }
 
-  }
+      getClimate();
+    }
+  }, [location]);
 
   return (
     <>
@@ -46,7 +44,11 @@ const LocationComponent = () => {
         <h2 id="time">{new Date().toLocaleTimeString()}</h2>
 
         <h1 style={{marginTop: "2%"}}>Clima</h1>
-        <h2 id="clima">Ensolarado</h2>
+        {loading ? (
+          <h2 id="clima">Obtendo localização...</h2>
+        ) : (
+          <h2 id="clima">{climate}</h2>
+        )}
         <h2>Sua localização atual é:</h2>
 
       {loading ? (

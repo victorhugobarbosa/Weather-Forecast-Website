@@ -9,6 +9,9 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients
 public class LigApplication {
     public static void main(String[] args) {
-        SpringApplication.run(LigApplication.class, args);
+        
+
+
+        .......................................................
     }
 }
